@@ -1,0 +1,38 @@
+body {
+	margin-top: 40px;
+	text-align: center;
+	font-size: 14px;
+	font-family: "Lucida Grande",Helvetica,Arial,Verdana,sans-serif;
+	padding-top: 60px;
+	padding-bottom: 40px;
+}
+
+#cal {
+	width: 900px;
+	margin: 0 auto;
+}
+#createTimeSlot {
+	width:450px;
+}
+#createTimeSlot .modal-body {
+	height:300px;
+	
+}
+#createTimeSlot form {
+	margin:0px;
+	padding:0px;
+}
+
+#attention {
+	padding:10px 50px;
+}
+blockquote p {
+	font-size: 12px !important;
+	color:#333 !important;
+}
+ul.chzn-results {
+	height: 95px;
+}
+.no-results span {
+	display:none !important;
+}

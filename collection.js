@@ -1,0 +1,1 @@
+var timeSlots = new Meteor.Collection('timeSlots');
