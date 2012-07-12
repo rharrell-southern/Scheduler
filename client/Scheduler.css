@@ -36,3 +36,7 @@ ul.chzn-results {
 .no-results span {
 	display:none !important;
 }
+
+.delete {
+	float: left;
+}

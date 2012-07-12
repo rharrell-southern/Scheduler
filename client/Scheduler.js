@@ -12,7 +12,17 @@ function genCal (){
 			$('#cal').html('');
 			$('#cal').fullCalendar({
 			    eventClick: function(calEvent, jsEvent, view) {
-			        alert('Event: ' + calEvent.id);
+			        $('#createTimeSlot').modal('show');
+			        Meteor.call('findScheduleById',calEvent.id, function (error, result){
+			        	$('#createTimeSlot #title').html("Update "+ result.title);
+						$('#createTimeSlot #delete').html('<input type="button" class="delete btn btn-danger" id="'+result.id +'" value="Delete"/>');
+			        	$('#datepicker').val(timeZoneAdjust(result.start, 'MM/dd/yyyy'));
+			        	$('#starttime').val(timeZoneAdjust(result.start, 'h:mma'));
+			        	$('#endtime').val(timeZoneAdjust(result.end, 'h:mma'));
+			        	$('#occupants option[value="'+result.occupants+'"]').attr('selected', true);
+			        	$("#occupants").trigger("liszt:updated");
+					})
+
 			    },
 				header: {
 					left: 'prev,next today',
@@ -20,15 +30,38 @@ function genCal (){
 					right: 'agendaWeek,agendaDay'
 				},
 				defaultView: 'agendaWeek',
-				ignoreTimeZone: false,
 				events: eventsList
 			});
 		});
 		
 };
 
+function timeZoneAdjust(dateString, format) {
+	var dateObject = new Date(dateString);
+	var offSet = dateObject.getTimezoneOffset() ;
+	dateObject.setMinutes(offSet);
+	return formatDate(dateObject, format);
+}
+
 Template.Main.events = {
-	
+	'click #createTimeSlotLink':function (event){
+		$('#createTimeSlot #delete').html('');
+		$('#createTimeSlot #title').html('Request a meeting time');
+		$('#datepicker').val('');
+    	$('#starttime').val('');
+    	$('#endtime').val('');
+    	$('#occupants option:selected').attr('selected', false);
+    	$("#occupants").trigger("liszt:updated");
+	},
+	'click #delete': function (event) {
+		var conf = confirm('Are you sure you want to delete this event?');
+		if (conf){
+			Meteor.call('deleteSchedule',event.target.id);
+			$('#createTimeSlot').modal('hide');
+			genCal();	
+		}
+		
+	}
 }
 
 Template.timeForm.Occupants = function () {
@@ -38,6 +71,7 @@ Template.timeForm.Occupants = function () {
 Template.timeForm.events = {
 	'submit': function(event){
 		event.preventDefault();
+		var title = grabUrlVars('title', window.location.href)
 		var day = $('#datepicker').val();
 		var starttime = $('#starttime').val();
 		var endtime = $('#endtime').val();
@@ -47,7 +81,7 @@ Template.timeForm.events = {
 		start = new Date(start);
 		end = new Date(end);
 		//alert('Date: ' + day + '\nStart: ' + start + '\nEnd: ' + end + '\nOccupants: ' + occupants);
-		Meteor.call('insertSchedule', 'This is a title' , start, end, occupants);
+		Meteor.call('insertSchedule', title , start, end, occupants);
 		$('#createTimeSlot').modal('hide');
 		genCal();
 	}

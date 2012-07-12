@@ -10,7 +10,7 @@
           <a class="brand" href="#">Connect Scheduler</a>
           <div class="nav-collapse">
             <ul class="nav">
-              <li><a data-toggle="modal" href="#createTimeSlot">Create a Time Slot</a></li>
+              <li><a id="createTimeSlotLink" data-toggle="modal" href="#createTimeSlot">Create a Time Slot</a></li>
             </ul>
           </div><!--/.nav-collapse -->
         </div>
@@ -24,7 +24,7 @@
 	<div class="modal hide fade" id="createTimeSlot">
 		  <div class="modal-header">
 		    <button type="button" class="close" data-dismiss="modal">×</button>
-		    <h2>Time Slot Form</h2>
+		    <h2 id="title"></h2>
 		  </div>
 		  <form>
 			  <div class="modal-body">
@@ -43,6 +43,7 @@
 	            </div>
 	          </div>
 			  <div class="modal-footer">
+			  	<div id="delete"></div>
 			    <a href="#" class="btn" data-dismiss="modal">Close</a>
 			    <input type="submit" class="btn btn-primary" value="Submit Request" />
 			  </div>

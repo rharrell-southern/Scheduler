@@ -1,5 +1,5 @@
 Meteor.methods({
-	insertSchedule: function (title, start, end, occupants ) {
+	insertSchedule: function (title, start, end, occupants) {
 		timeSlots.insert({title:title, start:start, end:end, occupants:occupants, allDay:false}, function(error, result){
 			timeSlots.update({_id:result},{$set: {id:result}});
 		});
@@ -30,5 +30,11 @@ Meteor.methods({
 			eventsList.push(item);
 		});
 		return eventsList;
+	},
+	findScheduleById: function(id){
+		return timeSlots.findOne({_id:id});
+	},
+	deleteSchedule: function (id) {
+		timeSlots.remove({_id:id});
 	}
 })
